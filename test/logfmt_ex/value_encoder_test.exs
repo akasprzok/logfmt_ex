@@ -2,7 +2,7 @@ defmodule LogfmtEx.ValueEncoderTest do
   use ExUnit.Case
   doctest LogfmtEx.ValueEncoder
 
-  import LogfmtEx.ValueEncoder, only: [encode/1]
+  import LogfmtEx.ValueEncoder, only: [encode: 1]
 
   test "encodes BitString" do
     assert encode("foo") == "foo"
@@ -21,8 +21,8 @@ defmodule LogfmtEx.ValueEncoderTest do
   end
 
   test "encodes PID" do
-    pid = :c.pid(150,150,150)
-    assert encode(pid) == "#PID<150,150,150>"
+    pid = self()
+    assert encode(pid) == inspect(pid)
   end
 
   test "encodes Reference" do

@@ -45,7 +45,6 @@ defmodule LogfmtEx do
     |> Keyword.get(:format, @default_format)
     |> Enum.each(&encode(&1, level, message, {date, time}, metadata, opts))
     |> add_newline()
-
   end
 
   @spec format_time({0..23, 0..59, 0..59, 0..999}) :: IO.chardata()
@@ -75,14 +74,15 @@ defmodule LogfmtEx do
   defp encode(:timestamp, _level, _message, {date, time}, _metadata, opts) do
     timestamp_key = opts |> Keyword.get(:timestamp_key, @default_timestamp_key)
 
-    timestamp = opts
-    |> Keyword.get(:timestamp_format, @default_timestamp_format)
-    |> encode_timestamp({time, date})
+    timestamp =
+      opts
+      |> Keyword.get(:timestamp_format, @default_timestamp_format)
+      |> encode_timestamp({time, date})
 
     Encoder.encode(timestamp_key, timestamp)
   end
 
-  defp encode(:level, level, _, _, _, opts) do
+  defp encode(:level, level, _message, _date_time, _metadata, opts) do
     opts
     |> Keyword.get(:level_key, @default_level_key)
     |> Encoder.encode(level)
@@ -93,6 +93,9 @@ defmodule LogfmtEx do
     |> Keyword.get(:message_key, @default_message_key)
     |> Encoder.encode(message)
   end
-  defp encode(:node, _level, _message, _date_time, _metadata, _opts), do: Encoder.encode(@node, node())
+
+  defp encode(:node, _level, _message, _date_time, _metadata, _opts),
+    do: Encoder.encode(@node, node())
+
   defp encode(:metadata, _level, _message, _date_time, _metadata, _opts), do: "user_id=123"
 end

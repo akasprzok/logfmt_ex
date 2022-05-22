@@ -3,26 +3,26 @@ defprotocol LogfmtEx.ValueEncoder do
   def encode(value)
 end
 
-defimpl LogFmtEx.ValueEncoder, for: BitString do
+defimpl LogfmtEx.ValueEncoder, for: BitString do
   def encode(str), do: str
 end
 
-defimpl LogFmtEx.ValueEncoder, for: Atom do
+defimpl LogfmtEx.ValueEncoder, for: Atom do
   def encode(atom), do: Atom.to_string(atom)
 end
 
-defimpl LogFmtEx.ValueEncoder, for: Integer do
+defimpl LogfmtEx.ValueEncoder, for: Integer do
   def encode(int), do: Integer.to_string(int)
 end
 
-defimpl LogFmtEx.ValueEncoder, for: Float do
-  def encode(float), do: Float.to_string(int)
+defimpl LogfmtEx.ValueEncoder, for: Float do
+  def encode(float), do: Float.to_string(float)
 end
 
-defimpl LogFmtEx.ValueEncoder, for: PID do
-  def encode(float), do: inspect(pid)
+defimpl LogfmtEx.ValueEncoder, for: PID do
+  def encode(pid), do: inspect(pid)
 end
 
-defimpl LogFmtEx.ValueEncoder, for: Reference do
-  def encode(float), do: inspect(ref)
+defimpl LogfmtEx.ValueEncoder, for: Reference do
+  def encode(ref), do: inspect(ref)
 end

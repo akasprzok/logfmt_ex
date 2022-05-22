@@ -10,8 +10,10 @@ defmodule LogfmtEx.Encoder do
   end
 
   defp encode_value(""), do: ~s("")
+
   defp encode_value(value) do
     value = value |> ValueEncoder.encode()
+
     case infer_quotes(value) do
       :unquoted -> value
       :quoted -> ["\"", value, "\""]
