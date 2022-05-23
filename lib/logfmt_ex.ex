@@ -71,7 +71,7 @@ defmodule LogfmtEx do
     [format_time(time), " ", format_date(date)]
   end
 
-  #TODO: optimize this - but implementing a protocol for iolist/iodata seems hard.
+  # TODO: optimize this - but implementing a protocol for iolist/iodata seems hard.
   defp encode(:timestamp, _level, _message, {date, time}, _metadata, opts) do
     timestamp_key = opts |> Keyword.get(:timestamp_key, @default_timestamp_key)
 
