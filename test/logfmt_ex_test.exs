@@ -33,7 +33,7 @@ defmodule LogfmtExTest do
     assert format(:huzzah, "really thoughtful thoughts", time,
     [bitstring: string, atom: :atom, integer: 1, float: 1.2, pid: pid, reference: ref],
     [format: [:metadata]])
-    |> IO.iodata_to_binary() == ~s(oh no)
+    |> IO.iodata_to_binary() == "bitstring=\"a thing!\" atom=atom integer=1 float=1.2 pid=" <> inspect(pid) <> " reference=" <> inspect(ref) <> "\n"
 
   end
 

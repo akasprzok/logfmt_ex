@@ -99,5 +99,9 @@ defmodule LogfmtEx do
   defp encode(:node, _level, _message, _date_time, _metadata, _opts),
     do: Encoder.encode(@node, node())
 
-  defp encode(:metadata, _level, _message, _date_time, _metadata, _opts), do: "user_id=123"
+  defp encode(:metadata, _level, _message, _date_time, metadata, opts) do
+    metadata
+    |> Enum.map(fn {key, value} -> Encoder.encode(key, value, opts) end)
+    |> Enum.intersperse(" ")
+  end
 end
