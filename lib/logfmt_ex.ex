@@ -43,7 +43,7 @@ defmodule LogfmtEx do
   def format(level, message, {date, time}, metadata, opts) do
     opts
     |> Keyword.get(:format, @default_format)
-    |> Enum.each(&encode(&1, level, message, {date, time}, metadata, opts))
+    |> Enum.map(&encode(&1, level, message, {date, time}, metadata, opts))
     |> add_newline()
   end
 
@@ -71,6 +71,7 @@ defmodule LogfmtEx do
     [format_time(time), " ", format_date(date)]
   end
 
+  #TODO: optimize this - but implementing a protocol for iolist/iodata seems hard.
   defp encode(:timestamp, _level, _message, {date, time}, _metadata, opts) do
     timestamp_key = opts |> Keyword.get(:timestamp_key, @default_timestamp_key)
 
@@ -78,6 +79,7 @@ defmodule LogfmtEx do
       opts
       |> Keyword.get(:timestamp_format, @default_timestamp_format)
       |> encode_timestamp({time, date})
+      |> IO.iodata_to_binary()
 
     Encoder.encode(timestamp_key, timestamp)
   end
