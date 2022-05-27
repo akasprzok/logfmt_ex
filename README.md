@@ -61,6 +61,10 @@ Structs can be encoded via the [LogfmtEx.ValueEncoder](lib/logfmt_ex/value_encod
   end
 ```
 
+## Testing and Development
+
+This library uses [asdf](https://asdf-vm.com) to manage runtime versions of Elixir and Erlang.
+
 ## Alternatives
 
 LogfmtEx is a simple logfmt formatter specifically for the Elixir console backend.
