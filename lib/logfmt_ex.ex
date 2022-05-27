@@ -7,18 +7,19 @@ defmodule LogfmtEx do
   This module allows developers to specify a list of atoms that
   serves as template for log messages, for example:
 
-  [:timestamp, :level, :message, :metadata]
+  `[:timestamp, :level, :message, :metadata]`
 
   Will print an error message as:
+    ```
     timestamp="18:43:12 2022-5-22" level=error message="oh no spaghettio" user_id=13
+    ```
 
   The valid parameters you can use are:
-    * :timestamp  The time and date the log message was sent
-    * :message    The log message
-    * :level      The log level
-    * :node       The node that printed the message
-    * :metadata   The metadata attached to the log
-
+    * `:timestamp` - the time and date the log message was sent
+    * `:message` - the log message
+    * `:level` - the log level
+    * `:node` - the node that printed the message
+    * `:metadata` - the metadata attached to the log
 
   """
 
