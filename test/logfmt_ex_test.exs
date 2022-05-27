@@ -27,7 +27,7 @@ defmodule LogfmtExTest do
     message =
       "quirked up white boy with a little bit of swag busts it down coding style.. is he goated with the sauce?"
 
-    assert format(:huzzah, message, time, [meta: "data"], format: [:message])
+    assert format(:error, message, time, [meta: "data"], format: [:message])
            |> IO.iodata_to_binary() == "message=\"" <> message <> "\"\n"
   end
 
@@ -45,6 +45,40 @@ defmodule LogfmtExTest do
            )
            |> IO.iodata_to_binary() ==
              "bitstring=\"a thing!\" atom=atom integer=1 float=1.2 pid=" <>
+               inspect(pid) <> " reference=" <> inspect(ref) <> "\n"
+  end
+
+  test "encodes node", %{time: time} do
+    node = node()
+
+    assert format(
+             :huzzah,
+             "really thoughtful thoughts",
+             time,
+             [user_id: 123],
+             format: [:node]
+           )
+           |> IO.iodata_to_binary() == "node=" <> Atom.to_string(node) <> "\n"
+  end
+
+  test "encodes the whole owl", %{time: time} do
+    ref = make_ref()
+    string = "a thing!"
+    pid = self()
+
+    assert format(
+             :huzzah,
+             "really thoughtful thoughts",
+             time,
+             bitstring: string,
+             atom: :atom,
+             integer: 1,
+             float: 1.2,
+             pid: pid,
+             reference: ref,
+           )
+           |> IO.iodata_to_binary() ==
+             ~s(timestamp=\"12:38:38.055 1973-03-12\" level=huzzah message=\"really thoughtful thoughts\" bitstring=\"a thing!\" atom=atom integer=1 float=1.2 pid=) <>
                inspect(pid) <> " reference=" <> inspect(ref) <> "\n"
   end
 end

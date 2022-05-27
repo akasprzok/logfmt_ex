@@ -1,5 +1,7 @@
+import Kernel, except: [inspect: 2]
+
 defmodule LogfmtEx do
-  @moduledoc """
+  @moduledoc ~S"""
   Formats logs in logfmt format.
 
   This module allows developers to specify a list of atoms that
@@ -8,7 +10,7 @@ defmodule LogfmtEx do
   [:timestamp, :level, :message, :metadata]
 
   Will print an error message as:
-    18:43:12 level=error message="oh no spaghettio" user_id=13
+    timestamp="18:43:12 2022-5-22" level=error message="oh no spaghettio" user_id=13
 
   The valid parameters you can use are:
     * :timestamp  The time and date the log message was sent
@@ -16,6 +18,7 @@ defmodule LogfmtEx do
     * :level      The log level
     * :node       The node that printed the message
     * :metadata   The metadata attached to the log
+
 
   """
 
@@ -44,6 +47,7 @@ defmodule LogfmtEx do
     opts
     |> Keyword.get(:format, @default_format)
     |> Enum.map(&encode(&1, level, message, {date, time}, metadata, opts))
+    |> Enum.intersperse(" ")
     |> add_newline()
   end
 
