@@ -1,4 +1,4 @@
-name: 'Main Build'
+name: 'main'
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -23,7 +23,7 @@ jobs:
           elixir-version: '1.13.4'
           otp-version: '25.0'
       - name: Restore deps cache
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: deps
           key: ${{ runner.os }}-mix-v2-${{ hashFiles('**/mix.lock') }}
@@ -52,14 +52,14 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Elixir/Erlang setup
         uses: erlef/setup-elixir@v1
         with:
           elixir-version: ${{ matrix.elixir }}
           otp-version: ${{ matrix.otp }}
       - name: Restore deps cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: deps
           key: ${{ runner.os }}-mix-v2-${{ hashFiles('**/mix.lock') }}
