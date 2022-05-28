@@ -11,7 +11,6 @@ defimpl LogfmtEx.ValueEncoder, for: Atom do
   def encode(atom), do: Atom.to_string(atom)
 end
 
-# TODO: something credo won't like
 defimpl LogfmtEx.ValueEncoder, for: Integer do
   def encode(int), do: Integer.to_string(int)
 end
