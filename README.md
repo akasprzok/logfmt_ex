@@ -1,3 +1,9 @@
+![main](https://github.com/akasprzok/logfmt_ex/actions/workflows/main.yml/badge.svg?branch=main)
+[![Hex](https://img.shields.io/hexpm/v/logfmt_ex.svg)](https://hex.pm/packages/logfmt_ex/)
+[![Hex Docs](https://img.shields.io/badge/hex-docs-informational.svg)](https://hexdocs.pm/logfmt_ex/)
+[![License](https://img.shields.io/hexpm/l/logfmt_ex)](LICENSE.md)
+
+
 # LogfmtEx
 
 Yet another logfmt log formatter for Elixir's :console logger backend.
