@@ -46,12 +46,18 @@ An example configuration would then look like
 ```elixir
 config :logger, :console,
   format: {LogfmtEx, :format},
-  metadata: [:mfa, :request_id, :pid]
+  metadata: [:user_id, :pid, :file]
 
 config LogfmtEx, :opts,
   format: [:level, :message, :node, :timestamp, :metadata],
   timestamp_key: "ts",
   message_key: "msg"
+```
+
+for which `Logger.info("I am a message", user_id: 123)` would ouput something along the lines of
+
+```
+level=info msg="I am a message" ts="12:38:38.055 1973-03-12" user_id=123 pid=#PID<0.223.0> file=test/logfmt_ex_test.exs\n
 ```
 
 
