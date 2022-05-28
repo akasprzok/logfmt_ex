@@ -2,6 +2,9 @@ import Config
 
 if Mix.env() != :prod do
   config :git_hooks,
+    extra_success_returns: [
+      {:ok, []}
+    ],
     auto_install: true,
     verbose: true,
     hooks: [
@@ -17,8 +20,5 @@ if Mix.env() != :prod do
           {:mix_task, :test}
         ]
       ]
-    ],
-    extra_success_returns: [
-      {:ok, []}
     ]
 end
