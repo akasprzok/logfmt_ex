@@ -5,9 +5,9 @@ env:
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   analysis:
@@ -36,3 +36,38 @@ jobs:
         run: mix compile --warnings-as-errors
       - name: Credo strict
         run: mix credo --strict
+  
+  unit_test:
+    name: Unit tests
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        elixir:
+          - '1.12'
+          - '1.13'
+        otp:
+          - '24.0'
+          - '25.0'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Elixir/Erlang setup
+        uses: erlef/setup-elixir@v1
+        with:
+          elixir-version: ${{ matrix.elixir }}
+          otp-version: ${{ matrix.otp }}
+      - name: Restore deps cache
+        uses: actions/cache@v2
+        with:
+          path: deps
+          key: ${{ runner.os }}-mix-v2-${{ hashFiles('**/mix.lock') }}
+          restore-keys: ${{ runner.os }}-mix-v2-
+      - name: Install deps
+        run: mix deps.get
+      - name: tests
+        env:
+          MIX_ENV: test
+        run: mix test
+    

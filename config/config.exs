@@ -7,10 +7,14 @@ if Mix.env() != :prod do
     hooks: [
       pre_commit: [
         tasks: [
-          {:cmd, "mix format"},
+          {:mix_task, :format}
+        ]
+      ],
+      pre_push: [
+        tasks: [
           {:cmd, "mix compile --warnings-as-errors"},
-          {:cmd, "mix credo --strict"},
-          {:cmd, "mix test"}
+          {:mix_task, :credo, ["--strict"]},
+          {:mix_task, :test}
         ]
       ]
     ]
