@@ -1,3 +1,5 @@
+![main](https://github.com/akasprzok/logfmt_ex/actions/workflows/main.yml/badge.svg?branch=main)
+
 # LogfmtEx
 
 Yet another logfmt log formatter for Elixir's :console logger backend.
