@@ -2,9 +2,6 @@ import Config
 
 if Mix.env() != :prod do
   config :git_hooks,
-    extra_success_returns: [
-      {:ok, []}
-    ],
     auto_install: true,
     verbose: true,
     hooks: [
@@ -15,7 +12,7 @@ if Mix.env() != :prod do
       ],
       pre_push: [
         tasks: [
-          {:mix_task, :compile, ["--warnings-as-errors"]},
+          {:cmd, "mix compile --warnings-as-errors"},
           {:mix_task, :credo, ["--strict"]},
           {:mix_task, :test}
         ]
