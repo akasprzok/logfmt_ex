@@ -75,7 +75,7 @@ defmodule LogfmtExTest do
              integer: 1,
              float: 1.2,
              pid: pid,
-             reference: ref,
+             reference: ref
            )
            |> IO.iodata_to_binary() ==
              ~s(timestamp=\"12:38:38.055 1973-03-12\" level=huzzah message=\"really thoughtful thoughts\" bitstring=\"a thing!\" atom=atom integer=1 float=1.2 pid=) <>
@@ -89,12 +89,13 @@ defmodule LogfmtExTest do
              :info,
              "I am a message",
              time,
-            [user_id: 123,
-            pid: pid,
-            file: "test/logfmt_ex_test.exs",],
-            [format: [:level, :message, :timestamp, :metadata], timestamp_key: "ts", message_key: "msg"]
+             [user_id: 123, pid: pid, file: "test/logfmt_ex_test.exs"],
+             format: [:level, :message, :timestamp, :metadata],
+             timestamp_key: "ts",
+             message_key: "msg"
            )
            |> IO.iodata_to_binary() ==
-             ~s(level=info msg=\"I am a message\" ts=\"12:38:38.055 1973-03-12\" user_id=123 pid=) <> inspect(pid) <> " file=test/logfmt_ex_test.exs\n"
-   end
+             ~s(level=info msg=\"I am a message\" ts=\"12:38:38.055 1973-03-12\" user_id=123 pid=) <>
+               inspect(pid) <> " file=test/logfmt_ex_test.exs\n"
+  end
 end
