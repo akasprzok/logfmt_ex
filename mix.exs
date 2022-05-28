@@ -28,7 +28,9 @@ defmodule LogfmtEx.MixProject do
 
   defp deps do
     [
-      {:ex_doc, "~>0.28", only: :dev, runtime: false}
+      {:ex_doc, "~>0.28", only: :dev, runtime: false},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      {:git_hooks, "~> 0.7", only: :dev, runtime: false}
     ]
   end
 
@@ -43,7 +45,8 @@ defmodule LogfmtEx.MixProject do
     [
       licenses: ["MIT"],
       links: %{"GitHub" => @url},
-      files: ~w(mix.exs lib README.md LICENSE.md)
+      files: ~w(mix.exs lib README.md LICENSE.md),
+      maintainers: ["Andreas Kasprzok"]
     ]
   end
 

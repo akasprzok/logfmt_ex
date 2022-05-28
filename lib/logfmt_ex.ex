@@ -25,7 +25,7 @@ defmodule LogfmtEx do
 
   alias LogfmtEx.Encoder
 
-  @type time :: {{1970..10000, 1..12, 1..31}, {0..23, 0..59, 0..59, 0..99}}
+  @type time :: {{1970..10_000, 1..12, 1..31}, {0..23, 0..59, 0..59, 0..99}}
   @default_level_key "level"
   @default_message_key "message"
   @default_timestamp_key "timestamp"
@@ -36,14 +36,15 @@ defmodule LogfmtEx do
   @type pattern_keys :: :timestamp | :level | :message | :metadata | :node
   @type pattern :: list(pattern_keys())
 
-  @spec format(Logger.level(), any(), Logger.Formatter.time(), keyword()) :: iodata()
+  @spec format(Logger.level(), any(), Logger.Formatter.time(), Keyword.t()) :: iodata()
   def format(level, message, {date, time}, metadata) do
     opts = Application.get_env(__MODULE__, :opts, [])
 
     format(level, message, {date, time}, metadata, opts)
   end
 
-  @spec format(Logger.level(), any(), Logger.Formatter.time(), keyword(), keyword()) :: iodata()
+  @spec format(Logger.level(), any(), Logger.Formatter.time(), Keyword.t(), Keyword.t()) ::
+          iodata()
   def format(level, message, {date, time}, metadata, opts) do
     opts
     |> Keyword.get(:format, @default_format)
@@ -76,7 +77,6 @@ defmodule LogfmtEx do
     [format_time(time), " ", format_date(date)]
   end
 
-  # TODO: optimize this - but implementing a protocol for iolist/iodata seems hard.
   defp encode(:timestamp, _level, _message, {date, time}, _metadata, opts) do
     timestamp_key = opts |> Keyword.get(:timestamp_key, @default_timestamp_key)
 
@@ -84,6 +84,7 @@ defmodule LogfmtEx do
       opts
       |> Keyword.get(:timestamp_format, @default_timestamp_format)
       |> encode_timestamp({time, date})
+      # optimize this?
       |> IO.iodata_to_binary()
 
     Encoder.encode(timestamp_key, timestamp)

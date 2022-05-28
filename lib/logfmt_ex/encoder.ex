@@ -1,8 +1,15 @@
 defmodule LogfmtEx.Encoder do
+  @moduledoc """
+  Encodes key/value pairs.
+  """
+
   alias LogfmtEx.ValueEncoder
+
+  @type key :: String.t() | atom()
 
   @delimiter ?=
 
+  @spec encode(key(), term(), keyword()) :: iodata()
   def encode(key, value, opts \\ []) do
     delimiter = opts |> Keyword.get(:delimiter, @delimiter)
 
