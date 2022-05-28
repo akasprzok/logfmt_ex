@@ -1,4 +1,8 @@
 ![main](https://github.com/akasprzok/logfmt_ex/actions/workflows/main.yml/badge.svg?branch=main)
+![Hex](https://img.shields.io/hexpm/v/logfmt_ex.svg)
+[![Hex Docs](https://img.shields.io/badge/hex-docs-informational.svg)](https://hexdocs.pm/logfmt_ex/)
+![License](https://img.shields.io/hexpm/l/logfmt_ex)
+
 
 # LogfmtEx
 
