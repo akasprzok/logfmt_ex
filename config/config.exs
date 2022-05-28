@@ -14,7 +14,8 @@ if Mix.env() != :prod do
         tasks: [
           {:cmd, "mix compile --warnings-as-errors"},
           {:mix_task, :credo, ["--strict"]},
-          {:mix_task, :test}
+          {:mix_task, :test},
+          {:mix_task, :format, ["--check-formatted"]}
         ]
       ]
     ]
