@@ -11,7 +11,7 @@ config :logger, :console,
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
+The package can be installed
 by adding `logfmt_ex` to your list of dependencies in `mix.exs`:
 
 ```elixir
@@ -22,14 +22,9 @@ def deps do
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/logfmt_ex>.
-
-
 ## Configuration
 
-While the [library guidelines](https://hexdocs.pm/elixir/main/library-guidelines.html) discourages [application configuration](https://hexdocs.pm/elixir/main/library-guidelines.html#avoid-application-configuration), we have no way to pass a config to the formatter, so we have to rely on it.
+While the [library guidelines](https://hexdocs.pm/elixir/main/library-guidelines.html) discourages [application configuration](https://hexdocs.pm/elixir/main/library-guidelines.html#avoid-application-configuration), we have no way to pass a config to the formatter, so we have to rely on application config.
 
 The following configuration options are available under `LogfmtEx, :opts`:
 
@@ -41,10 +36,23 @@ The following configuration options are available under `LogfmtEx, :opts`:
   * `:metadata` - metadata as key=value paris
   * `:node` - the node name
 * `timestamp_key` - changes the key used for the timestamp field. Defaults to `timestamp`.
-* `timestamp_format` - How the timestamp is formatted. The options are
+* `timestamp_format` - How the timestamp is formatted. Defaults to `:elixir`. The options are
   * `:elixir` - Uses the same formatting functions found in the standard elixir log formatter.
 * `level_key` - the key used for the log level. Defaults to `level`.
 * `message_key` - the key used for the message field. Defaults to `message`, but `msg` is a popular alternative.
+
+An example configuration would then look like
+
+```elixir
+config :logger, :console,
+  format: {LogfmtEx, :format},
+  metadata: [:mfa, :request_id, :pid]
+
+config LogfmtEx, :opts,
+  format: [:level, :message, :node, :timestamp, :metadata],
+  timestamp_key: "ts",
+  message_key: "msg"
+```
 
 
 **Note**

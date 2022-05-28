@@ -1,7 +1,7 @@
 defmodule LogfmtEx.MixProject do
   use Mix.Project
 
-  @version "0.1.0"
+  @version "0.1.1"
   @url "https://github.com/akasprzok/logfmt_ex"
 
   def project do
@@ -41,7 +41,7 @@ defmodule LogfmtEx.MixProject do
 
   defp package do
     [
-      licesnes: ["MIT"],
+      licenses: ["MIT"],
       links: %{"GitHub" => @url},
       files: ~w(mix.exs lib README.md LICENSE.md)
     ]
