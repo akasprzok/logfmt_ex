@@ -112,11 +112,6 @@ Structs can be encoded via the [LogfmtEx.ValueEncoder](lib/logfmt_ex/value_encod
 
 This library uses [asdf](https://asdf-vm.com) to manage runtime versions of Elixir and Erlang.
 
-## Example Application
-The applicatin in the [example_app](./example_app/) directory can be started via `mix run --no-halt` and produces a log every second.
-
-It enables you to play with the knobs found in the [config](./example_app/config/config.exs) file to get a feel for the format.
-
 ## Alternatives
 
 LogfmtEx is a simple logfmt formatter specifically for the Elixir console backend.
