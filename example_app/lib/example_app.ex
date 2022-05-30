@@ -10,6 +10,7 @@ defmodule ExampleApp do
       LogfmtEx,
       ExampleApp.LogSpammer
     ]
+
     Supervisor.start_link(children, strategy: :one_for_one)
   end
 end

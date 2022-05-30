@@ -3,28 +3,46 @@ defmodule ExampleApp.LogSpammer do
   A simple GenServer that periodically emits logs.
   """
   use GenServer
-  import Logger
+  require Logger
 
-  def start_link(_) do
-    GenServer.start_link(__MODULE__, %{}, name: __MODULE__)
+  @log_levels [:debug, :info, :warn, :error]
+  @default_messages [
+    "I am a message",
+    "woah you won't believe what happened",
+    "beep boop",
+    "I'll be back!",
+    "Ph'nglui mglw'nafh Cthulhu R'lyeh wgah'nagl fhtag"
+  ]
+  @default_interval :timer.seconds(1)
+
+  def start_link(opts \\ []) do
+    GenServer.start_link(__MODULE__, opts, name: __MODULE__)
   end
 
   @impl true
-  def init(state) do
-    spam_log()
+  def init(opts) do
+    spam_log(opts)
 
-    {:ok, state}
+    {:ok, opts}
   end
 
   @impl true
-  def handle_info(:log, state) do
-    Logger.log(:info, "I am a log message", [user_id: 123])
-    spam_log()
-    {:noreply, state}
+  def handle_info(:log, opts) do
+    message =
+      opts
+      |> Keyword.get(:messages, @default_messages)
+      |> Enum.random()
+
+    @log_levels
+    |> Enum.random()
+    |> Logger.log(message, user_id: 123)
+
+    spam_log(opts)
+    {:noreply, opts}
   end
 
-  def spam_log do
-    Process.send_after(self(), :log, :timer.seconds(1))
+  def spam_log(opts) do
+    interval = opts |> Keyword.get(:interval, @default_interval)
+    Process.send_after(self(), :log, interval)
   end
-
 end
