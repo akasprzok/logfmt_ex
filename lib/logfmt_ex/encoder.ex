@@ -10,7 +10,15 @@ defmodule LogfmtEx.Encoder do
   @delimiter ?=
 
   @spec encode(key(), term(), keyword()) :: iodata()
-  def encode(key, value, opts \\ []) do
+  def encode(key, value, opts \\ [])
+
+  def encode(:mfa, {m, f, a}, opts) do
+    delimiter = opts |> Keyword.get(:delimiter, @delimiter)
+
+    [encode_key(:mfa), delimiter, Exception.format_mfa(m, f, a)]
+  end
+
+  def encode(key, value, opts) do
     delimiter = opts |> Keyword.get(:delimiter, @delimiter)
 
     [encode_key(key), delimiter, encode_value(value)]

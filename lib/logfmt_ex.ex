@@ -28,5 +28,4 @@ defmodule LogfmtEx do
   def format(level, message, {date, time}, metadata) do
     GenServer.call(__MODULE__, {:format, level, message, {date, time}, metadata})
   end
-
 end
