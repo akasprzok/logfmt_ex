@@ -22,12 +22,19 @@ defmodule ExampleApp.LogSpammer do
   @impl true
   def init(opts) do
     spam_log(opts)
+    schedule_log(opts)
 
     {:ok, opts}
   end
 
   @impl true
   def handle_info(:log, opts) do
+    spam_log(opts)
+    schedule_log(opts)
+    {:noreply, opts}
+  end
+
+  def spam_log(opts) do
     message =
       opts
       |> Keyword.get(:messages, @default_messages)
@@ -37,11 +44,9 @@ defmodule ExampleApp.LogSpammer do
     |> Enum.random()
     |> Logger.log(message, user_id: 123)
 
-    spam_log(opts)
-    {:noreply, opts}
   end
 
-  def spam_log(opts) do
+  def schedule_log(opts) do
     interval = opts |> Keyword.get(:interval, @default_interval)
     Process.send_after(self(), :log, interval)
   end
