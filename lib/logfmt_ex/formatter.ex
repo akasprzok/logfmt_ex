@@ -45,12 +45,6 @@ defmodule LogfmtEx.Formatter do
     |> add_newline()
   end
 
-  defp encode_timestamp(:iso8601, {{hour, minute, second, millisecond}, {year, month, day}}) do
-    date = Date.new!(year, month, day)
-    time = Time.new!(hour, minute, second, millisecond * 1000)
-    datetime = NaiveDateTime.new!(date, time) |> NaiveDateTime.to_string()
-  end
-
   @spec format_time({0..23, 0..59, 0..59, 0..999}) :: IO.chardata()
   defp format_time({hh, mi, ss, ms}) do
     [pad2(hh), ?:, pad2(mi), ?:, pad2(ss), ?., pad3(ms)]
@@ -73,6 +67,12 @@ defmodule LogfmtEx.Formatter do
 
   defp encode_timestamp(:elixir, {time, date}) do
     [format_time(time), " ", format_date(date)]
+  end
+
+  defp encode_timestamp(:iso8601, {{hour, minute, second, millisecond}, {year, month, day}}) do
+    date = Date.new!(year, month, day)
+    time = Time.new!(hour, minute, second, millisecond * 1000)
+    NaiveDateTime.new!(date, time) |> NaiveDateTime.to_iso8601()
   end
 
   defp encode(:timestamp, _level, _message, {date, time}, _metadata, opts) do

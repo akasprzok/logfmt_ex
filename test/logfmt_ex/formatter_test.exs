@@ -23,6 +23,15 @@ defmodule LogfmtEx.FormatterTest do
              ~s(timestamp="12:38:38.055 1973-03-12"\n)
   end
 
+  test "encodes a :iso8601 timestamp", %{time: time} do
+    assert format(:doesntmatter, "I won't be printed", time, [barbara: "streisand"],
+             format: [:timestamp],
+             timestamp_format: :iso8601
+           )
+           |> IO.iodata_to_binary() ==
+             ~s(timestamp=1973-03-12T12:38:38.055000\n)
+  end
+
   test "encodes the message", %{time: time} do
     message =
       "quirked up white boy with a little bit of swag busts it down coding style.. is he goated with the sauce?"
