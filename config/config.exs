@@ -1,6 +1,6 @@
 import Config
 
-if Mix.env() != :prod do
+if Mix.env() == :dev do
   config :git_hooks,
     auto_install: true,
     verbose: true,
