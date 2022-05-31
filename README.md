@@ -69,7 +69,7 @@ config :logger, :console,
   format: {LogfmtEx, :format},
   metadata: [:user_id, :pid, :file]
 
-config LogfmtEx, :opts,
+config :logfmt_ex, :opts,
   format: [:level, :message, :node, :timestamp, :metadata],
   timestamp_key: "ts",
   message_key: "msg"
@@ -83,7 +83,7 @@ defmodule MyApp do
 
   def start(_type, _args) do
     children = [
-      {LogfmtEx, Application.get_env(LogfmtEx, :opts)},
+      {LogfmtEx, Application.get_env(:logfmt_ex, :opts)},
       MyApp.Web
     ]
 

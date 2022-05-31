@@ -10,7 +10,7 @@ defmodule ExampleApp do
 
   def start(_type, _args) do
     children = [
-      {LogfmtEx, Application.get_env(LogfmtEx, :opts)},
+      {LogfmtEx, Application.get_env(:logfmt_ex, :opts)},
       ExampleApp.LogSpammer
     ]
 
