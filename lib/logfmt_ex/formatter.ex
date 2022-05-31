@@ -97,7 +97,8 @@ defmodule LogfmtEx.Formatter do
   defp encode(:message, _level, message, _date_time, _metadata, opts) do
     opts
     |> Keyword.get(:message_key, @default_message_key)
-    # Need to find a good way to handle iodata with protocols
+    # find a better way to handle IOData input for message.
+    # Maybe all these encode functions should live in encoder.ex
     |> Encoder.encode(message |> IO.iodata_to_binary())
   end
 
