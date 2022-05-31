@@ -97,7 +97,8 @@ defmodule LogfmtEx.Formatter do
   defp encode(:message, _level, message, _date_time, _metadata, opts) do
     opts
     |> Keyword.get(:message_key, @default_message_key)
-    |> Encoder.encode(message)
+    # Need to find a good way to handle iodata with protocols
+    |> Encoder.encode(message |> IO.iodata_to_binary())
   end
 
   defp encode(:node, _level, _message, _date_time, _metadata, _opts),

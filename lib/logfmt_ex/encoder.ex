@@ -25,9 +25,13 @@ defmodule LogfmtEx.Encoder do
   end
 
   def encode(key, value, opts) do
-    delimiter = opts |> Keyword.get(:delimiter, @delimiter)
+    try do
+      delimiter = opts |> Keyword.get(:delimiter, @delimiter)
 
-    [encode_key(key), delimiter, encode_value(value)]
+      [encode_key(key), delimiter, encode_value(value)]
+    rescue
+      error -> "there was an error: #{inspect(error)}"
+    end
   end
 
   defp encode_value(""), do: ~s("")
