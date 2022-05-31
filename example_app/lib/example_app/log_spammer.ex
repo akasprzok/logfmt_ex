@@ -43,7 +43,6 @@ defmodule ExampleApp.LogSpammer do
     @log_levels
     |> Enum.random()
     |> Logger.log(message, user_id: 123)
-
   end
 
   def schedule_log(opts) do
