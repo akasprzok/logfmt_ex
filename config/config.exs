@@ -7,15 +7,10 @@ if Mix.env() == :dev do
     hooks: [
       pre_commit: [
         tasks: [
-          {:mix_task, :format}
-        ]
-      ],
-      pre_push: [
-        tasks: [
           {:cmd, "mix compile --warnings-as-errors"},
           {:mix_task, :credo, ["--strict"]},
           {:mix_task, :test},
-          {:mix_task, :format, ["--check-formatted"]}
+          {:mix_task, :format}
         ]
       ]
     ]
