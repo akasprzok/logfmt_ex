@@ -71,7 +71,7 @@ defmodule LogfmtEx.Formatter do
 
   defp encode_timestamp(:iso8601, {{hour, minute, second, millisecond}, {year, month, day}}) do
     date = Date.new!(year, month, day)
-    time = Time.new!(hour, minute, second, millisecond * 1000)
+    time = Time.new!(hour, minute, second, {millisecond * 1000, 3})
     NaiveDateTime.new!(date, time) |> NaiveDateTime.to_iso8601()
   end
 

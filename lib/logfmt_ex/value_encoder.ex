@@ -1,4 +1,5 @@
 defprotocol LogfmtEx.ValueEncoder do
+  @fallback_to_any true
   @spec encode(term()) :: iodata()
   def encode(value)
 end
@@ -25,4 +26,12 @@ end
 
 defimpl LogfmtEx.ValueEncoder, for: Reference do
   def encode(ref), do: inspect(ref)
+end
+
+defimpl LogfmtEx.ValueEncoder, for: Any do
+  def encode(any) do
+    to_string(any)
+  rescue
+    Protocol.UndefinedError -> inspect(any)
+  end
 end

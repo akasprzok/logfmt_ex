@@ -22,7 +22,8 @@ defmodule ExampleApp.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:logfmt_ex, path: "../"}
+      {:logfmt_ex, path: "../"},
+      {:blabbermouth, "~> 0.1.0"}
     ]
   end
 end

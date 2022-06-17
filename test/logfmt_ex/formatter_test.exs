@@ -29,7 +29,7 @@ defmodule LogfmtEx.FormatterTest do
              timestamp_format: :iso8601
            )
            |> IO.iodata_to_binary() ==
-             ~s(timestamp=1973-03-12T12:38:38.055000\n)
+             ~s(timestamp=1973-03-12T12:38:38.055\n)
   end
 
   test "encodes the message", %{time: time} do
