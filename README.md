@@ -57,6 +57,7 @@ The following options are available to be passed to LogfmtEx.start_link/1:
 * `timestamp_key` - changes the key used for the timestamp field. Defaults to `timestamp`.
 * `timestamp_format` - How the timestamp is formatted. Defaults to `:elixir`. The options are
   * `:elixir` - Uses the same formatting functions found in the standard elixir log formatter. Example: `"12:38:38.055 1973-03-12"`
+  * `:epoch_seconds` - outputs an integer representing the number of seconds elapsed since January 1, 1970. Only useful for applications that emit logs sporadically.
   * `:iso8601` - Formats the timestamp according to ISO8601-2019. Example: `2000-02-29T23:00:07`
 * `level_key` - the key used for the log level. Defaults to `level`.
 * `message_key` - the key used for the message field. Defaults to `message`, but `msg` is a popular alternative.

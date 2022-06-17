@@ -25,6 +25,8 @@ defmodule LogfmtEx.Formatter do
 
   alias LogfmtEx.Encoder
 
+  @unix_epoch 62_167_219_200
+
   @default_level_key "level"
   @default_message_key "message"
   @default_timestamp_key "timestamp"
@@ -69,10 +71,21 @@ defmodule LogfmtEx.Formatter do
     [format_time(time), " ", format_date(date)]
   end
 
-  defp encode_timestamp(:iso8601, {{hour, minute, second, millisecond}, {year, month, day}}) do
+  defp encode_timestamp(:iso8601, date_and_time) do
+    date_and_time |> to_datetime() |> NaiveDateTime.to_iso8601()
+  end
+
+  defp encode_timestamp(:epoch_seconds, date_and_time) do
+    {seconds, _microseconds} =
+      date_and_time |> to_datetime() |> NaiveDateTime.to_gregorian_seconds()
+
+    seconds - @unix_epoch
+  end
+
+  defp to_datetime({{hour, minute, second, millisecond}, {year, month, day}}) do
     date = Date.new!(year, month, day)
     time = Time.new!(hour, minute, second, {millisecond * 1000, 3})
-    NaiveDateTime.new!(date, time) |> NaiveDateTime.to_iso8601()
+    NaiveDateTime.new!(date, time)
   end
 
   defp encode(:timestamp, _level, _message, {date, time}, _metadata, opts) do
@@ -82,8 +95,6 @@ defmodule LogfmtEx.Formatter do
       opts
       |> Keyword.get(:timestamp_format, @default_timestamp_format)
       |> encode_timestamp({time, date})
-      # optimize this?
-      |> IO.iodata_to_binary()
 
     Encoder.encode(timestamp_key, timestamp)
   end
