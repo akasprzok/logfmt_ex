@@ -2,7 +2,7 @@ import Config
 
 config :logger, :console,
   format: {LogfmtEx, :format},
-  metadata: [:user_id, :integer, :float, :fallback, :unimplemented]
+  metadata: [:user_id, :integer, :float, :string, :atom, :list, :tuple]
 
 config :logfmt_ex, :opts,
   message_key: "msg",

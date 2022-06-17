@@ -1,0 +1,3 @@
+%{
+  "blabbermouth": {:hex, :blabbermouth, "0.1.0", "75938425a91ac7bf59cf7b7c6834e0cb81b153f4a184b4c64fbcccb188ba6f8b", [:mix], [], "hexpm", "953fde5e0d25084db85bc418691a489a9b03c9873dcf04ca6ef57a2ea6a4f640"},
+}

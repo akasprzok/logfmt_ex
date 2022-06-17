@@ -45,7 +45,7 @@ defmodule MyApp do
 
 ## Configuration
 
-The following options are available to be passed to Logfmt.start_link/1:
+The following options are available to be passed to LogfmtEx.start_link/1:
 
 * `:delimiter` - defaults to `=`.
 * `:format` - A list of atoms that defines the order in which key/value pairs will written to the log line. Defaults to `[:timestamp, :level, :message, :metadata]`. Valid parameters are
@@ -103,10 +103,21 @@ level=info msg="I am a message" ts="12:38:38.055 1973-03-12" user_id=123 pid=#PI
 Structs can be encoded via the [LogfmtEx.ValueEncoder](lib/logfmt_ex/value_encoder.ex) protocol.
 
 ```elixir
-  defimpl LogfmtEx.ValueEncoder, for: Regex do
-    def encode(regex), do: inspect(regex)
+defmodule User do
+  defstruct [:email, :name, :id]
+
+  defimpl LogfmtEx.ValueEncoder do
+    @doc """
+    As we don't want to leak PII into our logs, we encode the struct to just the user's ID.
+    """
+    def encode(user), do: to_string(user.id)
   end
 ```
+
+Types for which the protocol is not implemented will fall back to the `to_string/1` function in the `String.Chars` protocol.
+If the term being encoded does not implement that protocol, the formatter will fall back to the `Inspect` protocol.
+
+Note that the algebra documents produced by `Kernel.inspect/1` don't lend themselves to logfmt - this fallback is provided to minimize the chance that the formatter fails, instead making a "best effort" at producing usable output. It is recommended to implement either the `LogfmtEx.ValueEncoder` or `String.Chars` protocol for any data structures that might find their way into your logs.
 
 ## Testing and Development
 

@@ -9,9 +9,11 @@ defmodule ExampleApp do
   use Application
 
   def start(_type, _args) do
+    logfmt_ex_opts = Application.get_env(:logfmt_ex, :opts)
+
     children = [
-      {LogfmtEx, Application.get_env(:logfmt_ex, :opts)},
-      ExampleApp.LogSpammer
+      {LogfmtEx, logfmt_ex_opts},
+      {Blabbermouth, [interval: {Enum, :random, [100..10_000]}]}
     ]
 
     Supervisor.start_link(children, strategy: :one_for_one)
