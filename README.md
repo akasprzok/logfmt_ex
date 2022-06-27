@@ -2,7 +2,7 @@
 [![Hex](https://img.shields.io/hexpm/v/logfmt_ex.svg)](https://hex.pm/packages/logfmt_ex/)
 [![Hex Docs](https://img.shields.io/badge/hex-docs-informational.svg)](https://hexdocs.pm/logfmt_ex/)
 ![License](https://img.shields.io/hexpm/l/logfmt_ex)
-
+[![Coverage Status](https://coveralls.io/repos/github/akasprzok/logfmt_ex/badge.svg?branch=main)](https://coveralls.io/github/akasprzok/logfmt_ex?branch=main)
 
 # LogfmtEx
 

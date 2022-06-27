@@ -16,7 +16,16 @@ defmodule LogfmtEx.MixProject do
       description: description(),
       package: package(),
       source_url: @url,
-      docs: docs()
+      docs: docs(),
+
+      # Testing
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ]
     ]
   end
 
@@ -31,7 +40,8 @@ defmodule LogfmtEx.MixProject do
       {:ex_doc, "~> 0.28", only: :dev, runtime: false},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.1", only: :dev, runtime: false},
-      {:git_hooks, "~> 0.7", only: :dev, runtime: false}
+      {:git_hooks, "~> 0.7", only: :dev, runtime: false},
+      {:excoveralls, "~> 0.10", only: :test}
     ]
   end
 
