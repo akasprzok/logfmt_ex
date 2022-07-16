@@ -57,5 +57,26 @@ defmodule LogfmtEx.Encoder do
   defp encode_key(key) when is_atom(key), do: Atom.to_string(key)
   defp encode_key(key) when is_bitstring(key), do: key
 
-  defp escape(value), do: value
+  defp escape(string),
+    do: escape(string, "")
+
+  defp escape("", acc), do: acc
+
+  defp escape(<<"\t", rest::binary>>, acc),
+    do: escape(rest, <<acc::binary, "\\t">>)
+
+  defp escape(<<"\n", rest::binary>>, acc),
+    do: escape(rest, <<acc::binary, "\\n">>)
+
+  defp escape(<<"\r", rest::binary>>, acc),
+    do: escape(rest, <<acc::binary, "\\r">>)
+
+  defp escape(<<"\"", rest::binary>>, acc),
+    do: escape(rest, <<acc::binary, "\\\"">>)
+
+  defp escape(<<"\\", rest::binary>>, acc),
+    do: escape(rest, <<acc::binary, "\\\\">>)
+
+  defp escape(<<c, rest::binary>>, acc),
+    do: escape(rest, <<acc::binary, c>>)
 end

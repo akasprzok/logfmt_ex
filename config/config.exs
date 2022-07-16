@@ -1,17 +1,12 @@
 import Config
 
-if Mix.env() == :dev do
-  config :git_hooks,
-    auto_install: true,
-    verbose: true,
-    hooks: [
-      pre_commit: [
-        tasks: [
-          {:cmd, "mix compile --warnings-as-errors"},
-          {:mix_task, :credo, ["--strict"]},
-          {:mix_task, :test},
-          {:mix_task, :format}
-        ]
-      ]
-    ]
-end
+config :logger, :console,
+  format: {LogfmtEx, :format},
+  metadata: [:pid, :mfa, :string, :integer, :float]
+
+config :logger, utc_log: true
+
+config :logfmt_ex, :opts,
+  message_key: "msg",
+  timestamp_key: "ts",
+  timestamp_format: :iso8601
