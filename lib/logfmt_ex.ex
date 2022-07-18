@@ -1,5 +1,3 @@
-import Kernel, except: [inspect: 2]
-
 defmodule LogfmtEx do
   @moduledoc ~S"""
   GenServer for persistent opts

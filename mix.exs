@@ -31,6 +31,8 @@ defmodule LogfmtEx.MixProject do
 
   def application do
     [
+      registered: [LogfmtEx],
+      mod: {LogfmtEx.App, []},
       extra_applications: [:logger]
     ]
   end
