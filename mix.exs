@@ -1,7 +1,7 @@
 defmodule LogfmtEx.MixProject do
   use Mix.Project
 
-  @version "0.2.1"
+  @version "0.3.0"
   @url "https://github.com/akasprzok/logfmt_ex"
 
   def project do

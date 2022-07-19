@@ -8,6 +8,14 @@
 
 A log formatter for the logfmt format popularized by Heroku.
 
+
+```elixir
+Logger.info("I am a message", user_id: 123)
+```
+```
+level=info msg="I am a message" ts="12:38:38.055 1973-03-12" user_id=123 pid=#PID<0.223.0> file=test/logfmt_ex_test.exs
+```
+
 ## Installation
 
 The package can be installed
@@ -16,7 +24,7 @@ by adding `logfmt_ex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:logfmt_ex, "~> 0.2"}
+    {:logfmt_ex, "~> 0.3"}
   ]
 end
 ```
@@ -28,24 +36,27 @@ config :logger, :console,
   format: {LogfmtEx, :format}
 ```
 
-Additionally, add `LogfmtEx` to your `application.ex` with any [Configuration](#configuration) values as additional options.
+And add `logfmt_ex` to your `extra_applications` in `mix.exs`:
 
 ```elixir
-defmodule MyApp do
-  use Application
+def application do
+  [
+    mod: {YourApp.Application, []},
+    extra_applications: [:logfmt_ex, :logger]
+  ]
+end
+```
 
-  def start(_type, _args) do
-    children = [
-      # first entry, so formatter is available to all following modules.
-      {LogfmtEx, [message_key: "msg", timestamp_format: :iso8601],
-      MyApp.Web,
-      MyApp.CoolThing,
-      ...
+You can customize the formatting in your config:
+
+```elixir
+config :logfmt_ex, :opts,
+  message_key: "msg",
+  timestamp_key: "ts",
+  timestamp_format: :iso8601
 ```
 
 ## Configuration
-
-The following options are available to be passed to LogfmtEx.start_link/1:
 
 * `:delimiter` - defaults to `=`.
 * `:format` - A list of atoms that defines the order in which key/value pairs will written to the log line. Defaults to `[:timestamp, :level, :message, :metadata]`. Valid parameters are
@@ -62,42 +73,6 @@ The following options are available to be passed to LogfmtEx.start_link/1:
 * `level_key` - the key used for the log level. Defaults to `level`.
 * `message_key` - the key used for the message field. Defaults to `message`, but `msg` is a popular alternative.
 
-If you want to use application configuration for the logger, you can easily pull in the formatting options:
-
-config.exs:
-```elixir
-config :logger, :console,
-  format: {LogfmtEx, :format},
-  metadata: [:user_id, :pid, :file]
-
-config :logfmt_ex, :opts,
-  format: [:level, :message, :node, :timestamp, :metadata],
-  timestamp_key: "ts",
-  message_key: "msg"
-```
-
-application.ex:
-```elixir
-defmodule MyApp do
-
-  use Application
-
-  def start(_type, _args) do
-    children = [
-      {LogfmtEx, Application.get_env(:logfmt_ex, :opts)},
-      MyApp.Web
-    ]
-
-    Supervisor.start_link(children, strategy: :one_for_one)
-  end
-end
-```
-
-for which `Logger.info("I am a message", user_id: 123)` would ouput something along the lines of
-
-```
-level=info msg="I am a message" ts="12:38:38.055 1973-03-12" user_id=123 pid=#PID<0.223.0> file=test/logfmt_ex_test.exs\n
-```
 
 ## Encoding
 
