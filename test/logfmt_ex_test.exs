@@ -10,10 +10,8 @@ defmodule LogfmtExTest do
   end
 
   test "integration test", %{time: time} do
-    {:ok, _pid} = start_supervised(LogfmtEx)
-
     assert format(:info, [["I"], " am a message", ?!], time, meta: "data")
            |> IO.iodata_to_binary() ==
-             ~s(timestamp="12:38:38.055 1973-03-12" level=info message="I am a message!" meta=data\n)
+             ~s(ts=1973-03-12T12:38:38.055 level=info msg="I am a message!" meta=data\n)
   end
 end
