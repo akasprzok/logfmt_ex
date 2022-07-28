@@ -1,7 +1,7 @@
 defmodule LogfmtEx.MixProject do
   use Mix.Project
 
-  @version "0.3.0"
+  @version "0.3.1"
   @url "https://github.com/akasprzok/logfmt_ex"
 
   def project do
@@ -49,8 +49,7 @@ defmodule LogfmtEx.MixProject do
 
   defp description do
     """
-    LogfmtEx is a formatter for Elixir's :console Logger backend.
-    It emits logs in logfmt and is extensible via a value encoder protocol.
+    A logfmt log formatter for Elixir's :console logger backend.
     """
   end
 
@@ -65,8 +64,7 @@ defmodule LogfmtEx.MixProject do
 
   defp docs do
     [
-      main: "LogfmtEx",
-      extras: ["README.md"]
+      main: "LogfmtEx"
     ]
   end
 end

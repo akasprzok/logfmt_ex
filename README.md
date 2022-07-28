@@ -76,7 +76,7 @@ config :logfmt_ex, :opts,
 
 ## Encoding
 
-Structs can be encoded via the [LogfmtEx.ValueEncoder](lib/logfmt_ex/value_encoder.ex) protocol.
+Structs can be encoded via the `ValueEncoder` protocol.
 
 ```elixir
 defmodule User do
