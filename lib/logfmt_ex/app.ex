@@ -4,7 +4,7 @@ defmodule LogfmtEx.App do
 
   @doc false
   def start(_type, _args) do
-    opts = Application.get_env(:logfmt_ex, :opts)
+    opts = Application.get_env(:logfmt_ex, :opts, [])
 
     children = [
       {LogfmtEx, opts}
