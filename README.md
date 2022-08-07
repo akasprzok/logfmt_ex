@@ -24,7 +24,7 @@ by adding `logfmt_ex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:logfmt_ex, "~> 0.3"}
+    {:logfmt_ex, "~> 0.4"}
   ]
 end
 ```
@@ -34,17 +34,6 @@ In your app's logger configuration, specify the `LogfmtEx` module and its `forma
 ```elixir
 config :logger, :console,
   format: {LogfmtEx, :format}
-```
-
-And add `logfmt_ex` to your `extra_applications` in `mix.exs`:
-
-```elixir
-def application do
-  [
-    mod: {YourApp.Application, []},
-    extra_applications: [:logfmt_ex, :logger]
-  ]
-end
 ```
 
 You can customize the formatting in your config:
