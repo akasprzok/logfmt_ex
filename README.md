@@ -87,6 +87,13 @@ Note that the algebra documents produced by `Kernel.inspect/1` don't lend themse
 ## Testing and Development
 
 This library uses [asdf](https://asdf-vm.com) to manage runtime versions of Elixir and Erlang.
+Contributions, issues, and all other feedback is more than welcome!
+
+## Benchmarks
+
+the `/benchmarks` folder includes benchmarks comparing `LogfmtEx` to `Logger.Formatter`.
+
+You can run them with `mix run benchmarks/throughput.exs`.
 
 ## Alternatives
 
