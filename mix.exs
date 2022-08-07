@@ -43,7 +43,8 @@ defmodule LogfmtEx.MixProject do
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.1", only: :dev, runtime: false},
       {:git_hooks, "~> 0.7", only: :dev, runtime: false},
-      {:excoveralls, "~> 0.10", only: :test}
+      {:excoveralls, "~> 0.10", only: :test},
+      {:benchee, "~> 1.0", only: :dev}
     ]
   end
 
