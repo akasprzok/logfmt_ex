@@ -10,8 +10,8 @@ six_metadata = three_metadata ++ [ref: make_ref(), pid: self(), atom: :econnrefu
 
 Benchee.run(
     %{
-        "logger" => fn metadata -> Logger.Formatter.format(default_pattern, :info, message, timestamp, metadata) end,
-        "logfmt" => fn metadata -> LogfmtEx.format(:info, message, timestamp, metadata) end,
+        Logger.Formatter => fn metadata -> Logger.Formatter.format(default_pattern, :info, message, timestamp, metadata) end,
+        LogfmtEx => fn metadata -> LogfmtEx.format(:info, message, timestamp, metadata) end,
     },
     inputs: %{
         "no_metadata" => [],

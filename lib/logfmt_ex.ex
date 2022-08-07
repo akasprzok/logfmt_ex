@@ -19,7 +19,6 @@ defmodule LogfmtEx do
         timestamp_key: "ts",
         timestamp_format: :iso8601
 
-
   would emit:
 
       level=info msg="I am a message" ts="12:38:38.055 1973-03-12" user_id=123 pid=#PID<0.223.0> file=myapp/some_module.exs
@@ -42,10 +41,7 @@ defmodule LogfmtEx do
   * `message_key` - the key used for the message field. Defaults to `message`, but `msg` is a popular alternative.
 
   For encoding your own structs and types, see the `LogfmtEx.ValueEncoder` protocol.
-
   """
-
-  use GenServer
 
   alias LogfmtEx.Encoder
 
@@ -61,24 +57,10 @@ defmodule LogfmtEx do
   @type pattern_keys :: :timestamp | :level | :message | :metadata | :node
   @type pattern :: list(pattern_keys())
 
-  def start_link(opts \\ []) do
-    GenServer.start_link(__MODULE__, opts, name: __MODULE__)
-  end
-
-  @impl true
-  def init(opts) do
-    {:ok, opts}
-  end
-
-  @impl true
-  def handle_call({:format, level, message, {date, time}, metadata}, _from, opts) do
-    formatted_log = format(level, message, {date, time}, metadata, opts)
-    {:reply, formatted_log, opts}
-  end
-
   @spec format(Logger.level(), any(), Logger.Formatter.time(), Keyword.t()) :: iodata()
   def format(level, message, {date, time}, metadata) do
-    GenServer.call(__MODULE__, {:format, level, message, {date, time}, metadata})
+    opts = Application.get_env(:logfmt_ex, :opts, [])
+    format(level, message, {date, time}, metadata, opts)
   end
 
   @spec format(Logger.level(), any(), Logger.Formatter.time(), Keyword.t(), Keyword.t()) ::
