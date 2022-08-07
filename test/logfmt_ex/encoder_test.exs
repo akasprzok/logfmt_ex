@@ -9,7 +9,8 @@ defmodule LogfmtEx.EncoderTest do
   end
 
   test "can use other delimiters via opts" do
-    assert encode("foo", "bar", delimiter: ?:) |> IO.iodata_to_binary() == "foo:bar"
+    assert encode(:domain, [:elixir], delimiter: ?:) |> IO.iodata_to_binary() ==
+             "domain:[:elixir]"
   end
 
   test "encodes an empty string" do
@@ -18,5 +19,15 @@ defmodule LogfmtEx.EncoderTest do
 
   test "encodes quoted values" do
     assert encode("foo", "bar bar") |> IO.iodata_to_binary() == ~s(foo="bar bar")
+  end
+
+  test "escapes stuff" do
+    assert encode("foo", "bar\t\n\r\"\\bar") |> IO.iodata_to_binary() ==
+             ~s(foo="bar\\t\\n\\r\\"\\\\bar")
+  end
+
+  test "encodes domain" do
+    assert encode(:mfa, {Module, :function, 1}) |> IO.iodata_to_binary() ==
+             ~s(mfa=Module.function/1)
   end
 end
