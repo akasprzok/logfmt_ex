@@ -26,7 +26,10 @@ defprotocol LogfmtEx.ValueEncoder do
   """
 
   @fallback_to_any true
-  @spec encode(term()) :: iodata()
+  @doc """
+  Encodes `term` to chardata.
+  """
+  @spec encode(term()) :: IO.chardata()
   def encode(value)
 end
 

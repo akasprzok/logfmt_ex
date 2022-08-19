@@ -1,6 +1,13 @@
 defmodule LogfmtEx do
   @moduledoc ~S"""
-  A convenience for formatting logs in logfmt.
+  A convenience for formatting logs in logfmt, to be used with the `Logger.Backend.Console` backend.
+
+  To use, specify the `{LogfmtEx, :format}` tuple in the backend's configuration, replacing the format string:
+
+      config :logger, :console,
+        format: {LogfmtEx, :format}
+
+  ## Logfmt
 
   In logfmt, each line consists of a single level of key=value
   pairs, densely packed together.
@@ -23,7 +30,10 @@ defmodule LogfmtEx do
 
       level=info msg="I am a message" ts="12:38:38.055 1973-03-12" user_id=123 pid=#PID<0.223.0> file=myapp/some_module.exs
 
-  The valid configuration parameters are:
+  ## Configuration
+  
+  Several aspects of the format function can be customized via the application env in a `config/config.exs` file,
+  under `config :logfmt_ex, :opts`:
 
   * `:delimiter` - defaults to `=`.
   * `:format` - A list of atoms that defines the order in which key/value pairs will written to the log line. Defaults to `[:timestamp, :level, :message, :metadata]`. Valid parameters are
@@ -54,15 +64,38 @@ defmodule LogfmtEx do
   @default_format [:timestamp, :level, :message, :metadata]
   @node "node"
 
+  @typedoc """
+  Valid pattern keys. These mostly mimic the pattern keys in `Logger.Formatter`,
+  though :time and :date are merged into :timestamp.
+  """
   @type pattern_keys :: :timestamp | :level | :message | :metadata | :node
+
+  @typedoc """
+  A pattern is a list of valid pattern keys that determines in which order the key=value pairs are printed.
+  It defaults to #{inspect(@default_format)}.
+  """
   @type pattern :: list(pattern_keys())
 
-  @spec format(Logger.level(), any(), Logger.Formatter.time(), Keyword.t()) :: iodata()
+  @doc """
+  The main formatting function.
+
+  It is invoked by the console backend with four arguments:
+
+    * the log level: an atom (`t:atom/0`)
+    * the message: this is usually `t:IO.chardata/0`
+    * the current timestamp: a term of type `t:Logger.Formatter.time/0`
+    * the metadata: a keyword list (`t:keyword/0`)
+  """
+  @spec format(Logger.level(), any(), Logger.Formatter.time(), Keyword.t()) :: IO.chardata()
   def format(level, message, {date, time}, metadata) do
     opts = Application.get_env(:logfmt_ex, :opts, [])
     format(level, message, {date, time}, metadata, opts)
   end
 
+  @doc """
+  Same as the formatting function, but can be invoked with a keyword list of options from the Configuration section.
+  Invoked by format/4 after reading the application environment for :opts.
+  """
   @spec format(Logger.level(), any(), Logger.Formatter.time(), Keyword.t(), Keyword.t()) ::
           iodata()
   def format(level, message, {date, time}, metadata, opts \\ []) do
