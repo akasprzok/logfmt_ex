@@ -1,6 +1,6 @@
 defmodule LogfmtEx do
   @moduledoc ~S"""
-  A convenience for formatting logs in logfmt, to be used with the `Logger.Backend.Console` backend.
+  A convenience for formatting logs in logfmt, to be used with the `Logger.Backends.Console` backend.
 
   To use, specify the `{LogfmtEx, :format}` tuple in the backend's configuration, replacing the format string:
 
@@ -85,20 +85,13 @@ defmodule LogfmtEx do
     * the message: this is usually `t:IO.chardata/0`
     * the current timestamp: a term of type `t:Logger.Formatter.time/0`
     * the metadata: a keyword list (`t:keyword/0`)
+
+  May optionally be passed a list of options that is merged into the Application environment.
   """
   @spec format(Logger.level(), any(), Logger.Formatter.time(), Keyword.t()) :: IO.chardata()
-  def format(level, message, {date, time}, metadata) do
-    opts = Application.get_env(:logfmt_ex, :opts, [])
-    format(level, message, {date, time}, metadata, opts)
-  end
-
-  @doc """
-  Same as the formatting function, but can be invoked with a keyword list of options from the Configuration section.
-  Invoked by format/4 after reading the application environment for :opts.
-  """
-  @spec format(Logger.level(), any(), Logger.Formatter.time(), Keyword.t(), Keyword.t()) ::
-          iodata()
   def format(level, message, {date, time}, metadata, opts \\ []) do
+    opts = :logfmt_ex |> Application.get_env(:opts, []) |> Keyword.merge(opts)
+
     opts
     |> Keyword.get(:format, @default_format)
     |> Enum.map(&encode(&1, level, message, {date, time}, metadata, opts))
