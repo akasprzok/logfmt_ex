@@ -14,7 +14,7 @@ defmodule LogfmtEx.EncoderTest do
   end
 
   test "encodes an empty string" do
-    assert encode(:empty, "") |> IO.iodata_to_binary() == ~s(empty="")
+    assert encode(:empty, "") |> IO.iodata_to_binary() == ~s(empty=)
   end
 
   test "encodes quoted values" do

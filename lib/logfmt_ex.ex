@@ -31,7 +31,7 @@ defmodule LogfmtEx do
       level=info msg="I am a message" ts="12:38:38.055 1973-03-12" user_id=123 pid=#PID<0.223.0> file=myapp/some_module.exs
 
   ## Configuration
-  
+
   Several aspects of the format function can be customized via the application env in a `config/config.exs` file,
   under `config :logfmt_ex, :opts`:
 

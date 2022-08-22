@@ -1,14 +1,39 @@
 defmodule LogfmtEx.Encoder do
   @moduledoc """
-  Encodes key/value pairs.
+  Encodes key=value pairs in logfmt.
+
+  Quotes values containing spaces and `=`. For example,
+      Logger.info("I am a message with spaces", string: "key=value")
+
+  will be encoded as
+
+      message="I am a message with spaces" string="key=value"
+
+  Escapes newlines, line breaks, backslashes, and carriage returns.
   """
 
   alias LogfmtEx.ValueEncoder
 
+  @typedoc """
+  Metadata keys are atoms.
+  Message, timestamp, and level keys are strings.
+  """
   @type key :: String.t() | atom()
 
   @delimiter ?=
 
+  @doc """
+  Encodes the given key and value into a key=value pair.
+  Returns `iodata/0`, an efficient data type for creating large binaries from small chunks.
+
+  A subset of keys from standard Elixir metadata are handled in special ways:
+    * `:domain` - encoded using `inspect/1`
+    * `:mfa` - formatted using `Exception.format_mfa/3`
+
+  ## Options:
+
+    * `:delimiter` - defaults to =
+  """
   @spec encode(key(), term(), keyword()) :: iodata()
   def encode(key, value, opts \\ [])
 
@@ -32,7 +57,7 @@ defmodule LogfmtEx.Encoder do
     error -> "there was an error: #{inspect(error)}"
   end
 
-  defp encode_value(""), do: ~s("")
+  defp encode_value(""), do: ""
 
   defp encode_value(value) do
     value = value |> ValueEncoder.encode()
@@ -46,7 +71,6 @@ defmodule LogfmtEx.Encoder do
 
   defp infer_quotes(value), do: infer_quotes(value, :unquoted)
   defp infer_quotes(<<>>, acc), do: acc
-  defp infer_quotes(<<front, _rest::binary>>, _acc) when front <= 0x1F, do: :escaped
   defp infer_quotes(<<" ", rest::binary>>, _acc), do: infer_quotes(rest, :quoted)
   defp infer_quotes(<<"\"", _rest::binary>>, _acc), do: :escaped
   defp infer_quotes(<<"=", rest::binary>>, _acc), do: infer_quotes(rest, :quoted)
