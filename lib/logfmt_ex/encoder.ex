@@ -24,7 +24,7 @@ defmodule LogfmtEx.Encoder do
 
   @doc """
   Encodes the given key and value into a key=value pair.
-  Returns `iodata/0`, an efficient data type for creating large binaries from small chunks.
+  Returns `t:iodata/0`, an efficient data type for creating large binaries from small chunks.
 
   A subset of keys from standard Elixir metadata are handled in special ways:
     * `:domain` - encoded using `inspect/1`
