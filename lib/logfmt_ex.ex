@@ -116,7 +116,7 @@ defmodule LogfmtEx do
   defp pad3(int), do: Integer.to_string(int)
 
   defp add_newline(log) do
-    [log | "\n"]
+    [log, ?\n]
   end
 
   defp encode_timestamp(:elixir, {time, date}) do
