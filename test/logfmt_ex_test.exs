@@ -116,4 +116,16 @@ defmodule LogfmtExTest do
              ~s(level=info msg=\"I am a message\" ts=\"12:38:38.055 1973-03-12\" user_id=123 pid=) <>
                inspect(pid) <> " file=test/logfmt_ex_test.exs\n"
   end
+
+  test "encodes Unicode charlist messages", %{time: time} do
+    # Charlists with Unicode codepoints > 255
+    # "Hello 👍" as charlist: [72, 101, 108, 108, 111, 32, 128077]
+    unicode_charlist = [72, 101, 108, 108, 111, 32, 128_077]
+
+    result =
+      format(:info, unicode_charlist, time, [], format: [:message])
+      |> IO.iodata_to_binary()
+
+    assert result == "message=\"Hello 👍\"\n"
+  end
 end
