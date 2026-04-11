@@ -1,10 +1,10 @@
 defmodule LogfmtEx do
   @moduledoc ~S"""
-  A convenience for formatting logs in logfmt, to be used with the `Logger.Backends.Console` backend.
+  A convenience for formatting logs in logfmt.
 
-  To use, specify the `{LogfmtEx, :format}` tuple in the backend's configuration, replacing the format string:
+  To use, specify the `{LogfmtEx, :format}` tuple as the formatter:
 
-      config :logger, :console,
+      config :logger, :default_formatter,
         format: {LogfmtEx, :format}
 
   ## Logfmt
@@ -17,7 +17,7 @@ defmodule LogfmtEx do
 
   given the configuration
 
-      config :logger, :console,
+      config :logger, :default_formatter,
         format: {LogfmtEx, :format},
         metadata: [:user_id, :pid, :file]
 
