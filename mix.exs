@@ -8,7 +8,7 @@ defmodule LogfmtEx.MixProject do
     [
       app: :logfmt_ex,
       version: @version,
-      elixir: "~> 1.12 or ~> 1.13",
+      elixir: "~> 1.15",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
 
