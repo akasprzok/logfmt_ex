@@ -161,9 +161,19 @@ defmodule LogfmtEx do
   defp encode(:message, _level, message, _date_time, _metadata, opts) do
     opts
     |> Keyword.get(:message_key, @default_message_key)
-    # find a better way to handle IOData input for message.
-    # Maybe all these encode functions should live in encoder.ex
-    |> Encoder.encode(message |> IO.iodata_to_binary())
+    |> Encoder.encode(safe_message_to_binary(message))
+  end
+
+  # Safely converts a message to binary, handling both iodata and Unicode charlists.
+  #
+  # When Erlang's logger formats messages with ~p (like Ranch error logs), it can
+  # convert UTF-8 binaries containing emojis into charlists with Unicode codepoints > 255.
+  # IO.iodata_to_binary/1 only accepts bytes 0-255, so we fall back to to_string/1
+  # which properly handles Unicode charlists.
+  defp safe_message_to_binary(message) do
+    IO.iodata_to_binary(message)
+  rescue
+    ArgumentError -> to_string(message)
   end
 
   defp encode(:node, _level, _message, _date_time, _metadata, _opts),
