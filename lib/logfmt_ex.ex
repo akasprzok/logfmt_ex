@@ -1,10 +1,10 @@
 defmodule LogfmtEx do
   @moduledoc ~S"""
-  A convenience for formatting logs in logfmt, to be used with the `Logger.Backends.Console` backend.
+  A convenience for formatting logs in logfmt.
 
-  To use, specify the `{LogfmtEx, :format}` tuple in the backend's configuration, replacing the format string:
+  To use, specify the `{LogfmtEx, :format}` tuple as the formatter:
 
-      config :logger, :console,
+      config :logger, :default_formatter,
         format: {LogfmtEx, :format}
 
   ## Logfmt
@@ -17,7 +17,7 @@ defmodule LogfmtEx do
 
   given the configuration
 
-      config :logger, :console,
+      config :logger, :default_formatter,
         format: {LogfmtEx, :format},
         metadata: [:user_id, :pid, :file]
 
@@ -83,12 +83,13 @@ defmodule LogfmtEx do
 
     * the log level: an atom (`t:atom/0`)
     * the message: this is usually `t:IO.chardata/0`
-    * the current timestamp: a term of type `t:Logger.Formatter.time/0`
+    * the current timestamp: a term of type `t:Logger.Formatter.date_time_ms/0`
     * the metadata: a keyword list (`t:keyword/0`)
 
   May optionally be passed a list of options that is merged into the Application environment.
   """
-  @spec format(Logger.level(), any(), Logger.Formatter.time(), Keyword.t()) :: IO.chardata()
+  @spec format(Logger.level(), any(), Logger.Formatter.date_time_ms(), Keyword.t()) ::
+          IO.chardata()
   def format(level, message, {date, time}, metadata, opts \\ []) do
     opts = :logfmt_ex |> Application.get_env(:opts, []) |> Keyword.merge(opts)
 

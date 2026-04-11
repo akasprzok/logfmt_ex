@@ -8,7 +8,7 @@ defmodule LogfmtEx.MixProject do
     [
       app: :logfmt_ex,
       version: @version,
-      elixir: "~> 1.12 or ~> 1.13",
+      elixir: "~> 1.15",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
 
@@ -39,7 +39,7 @@ defmodule LogfmtEx.MixProject do
     [
       {:benchee, "~> 1.0", only: :dev},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.1", only: :dev, runtime: false},
+      {:dialyxir, "~> 1.1", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.28", only: :dev, runtime: false},
       {:excoveralls, "~> 0.10", only: :test}
     ]

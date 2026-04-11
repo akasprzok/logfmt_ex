@@ -32,13 +32,17 @@ end
 In your app's logger configuration, specify the `LogfmtEx` module and its `format` function to be used to format your logs:
 
 ```elixir
-config :logger, :console,
+config :logger, :default_formatter,
   format: {LogfmtEx, :format}
 ```
 
 You can customize the formatting in your config:
 
 ```elixir
+config :logger, :default_formatter,
+  format: {LogfmtEx, :format},
+  metadata: [:user_id, :pid, :file]
+
 config :logfmt_ex, :opts,
   message_key: "msg",
   timestamp_key: "ts",
