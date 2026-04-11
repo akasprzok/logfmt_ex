@@ -83,12 +83,13 @@ defmodule LogfmtEx do
 
     * the log level: an atom (`t:atom/0`)
     * the message: this is usually `t:IO.chardata/0`
-    * the current timestamp: a term of type `t:Logger.Formatter.time/0`
+    * the current timestamp: a term of type `t:Logger.Formatter.date_time_ms/0`
     * the metadata: a keyword list (`t:keyword/0`)
 
   May optionally be passed a list of options that is merged into the Application environment.
   """
-  @spec format(Logger.level(), any(), Logger.Formatter.date_time_ms(), Keyword.t()) :: IO.chardata()
+  @spec format(Logger.level(), any(), Logger.Formatter.date_time_ms(), Keyword.t()) ::
+          IO.chardata()
   def format(level, message, {date, time}, metadata, opts \\ []) do
     opts = :logfmt_ex |> Application.get_env(:opts, []) |> Keyword.merge(opts)
 
