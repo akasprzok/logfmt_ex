@@ -88,7 +88,7 @@ defmodule LogfmtEx do
 
   May optionally be passed a list of options that is merged into the Application environment.
   """
-  @spec format(Logger.level(), any(), {{pos_integer(), 1..12, 1..31}, {0..23, 0..59, 0..59, 0..999}}, Keyword.t()) :: IO.chardata()
+  @spec format(Logger.level(), any(), Logger.Formatter.date_time_ms(), Keyword.t()) :: IO.chardata()
   def format(level, message, {date, time}, metadata, opts \\ []) do
     opts = :logfmt_ex |> Application.get_env(:opts, []) |> Keyword.merge(opts)
 
